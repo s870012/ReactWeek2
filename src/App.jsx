@@ -3,9 +3,9 @@ import axios from 'axios'
 import './assets/all.scss'
 
 function App() {
-  const url = 'https://ec-course-api.hexschool.io/v2'; 
-  const path = 's870012'; 
-
+  const url = import.meta.env.VITE_BASE_URL; 
+  const path = import.meta.env.VITE_API_PATH; 
+  
   const [user, setUser] = useState({
     username:'',
     password:''
@@ -46,7 +46,8 @@ function App() {
     })
   }
 
-  const login = async () => {
+  const login = async (e) => {
+    e.preventDefault();
     try {
       const res = await axios.post(`${url}/admin/signin`, user)
       const {token, expired} = res.data;
@@ -139,7 +140,7 @@ function App() {
             <div className="row justify-content-center">
               <h1 className="h3 mb-3 font-weight-normal">請先登入</h1>
               <div className="col-8">
-                <form id="form" className="form-signin">
+                <form id="form" className="form-signin" onSubmit={login}>
                   <div className="form-floating mb-3">
                     <input type="email" className="form-control" id="username" placeholder="name@example.com" value={user.username} onChange={controlInput} required autoFocus />
                     <label htmlFor="username">Email address</label>
@@ -148,8 +149,8 @@ function App() {
                     <input type="password" className="form-control" id="password" placeholder="Password" value={user.password} onChange={controlInput} required />
                     <label htmlFor="password">Password</label>
                   </div>
+                <button className="btn btn-lg btn-primary w-100 mt-3" type="submit">登入</button>
                 </form>
-                <button className="btn btn-lg btn-primary w-100 mt-3" type="submit" onClick={login}>登入</button>
               </div>
             </div>
             <p className="mt-5 mb-3 text-muted">&copy; 2024~∞ - 六角學院</p>
